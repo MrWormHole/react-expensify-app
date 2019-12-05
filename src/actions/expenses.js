@@ -7,7 +7,8 @@ export const addExpense = ( {description = "", note = "", amount = 0, createdAt 
             id: uuid(),
             description,
             note,
-            amount
+            amount,
+            createdAt
         }
     }
 );
