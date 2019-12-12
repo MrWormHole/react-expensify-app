@@ -3,9 +3,6 @@ import moment from "moment";
 import { SingleDatePicker} from "react-dates";
 import "react-dates/lib/css/_datepicker.css";
 
-const now = moment()
-console.log(now.format("MMM Do, YYYY"))
-
 export default class ExpenseForm extends React.Component {
     constructor(props) {
         super(props);
@@ -23,7 +20,7 @@ export default class ExpenseForm extends React.Component {
         const description = e.target.value;
         this.setState(() => {
             return {
-                description: description
+                description
             };
         });
     };
@@ -32,7 +29,7 @@ export default class ExpenseForm extends React.Component {
         const note = e.target.value;
         this.setState(() => {
             return {
-                note: note
+                note
             };
         });
     };
@@ -42,7 +39,7 @@ export default class ExpenseForm extends React.Component {
         if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
             this.setState(() => {
                 return {
-                    amount: amount
+                    amount
                 };
             });
         }
@@ -52,7 +49,7 @@ export default class ExpenseForm extends React.Component {
         if(createdAt) {
             this.setState(() => {
                 return {
-                    createdAt: createdAt
+                    createdAt
                 };
             });
         }
@@ -66,15 +63,17 @@ export default class ExpenseForm extends React.Component {
         });
     };
 
-    onSubmit = (e) => {
+    handleSubmit = (e) => {
         e.preventDefault();
-
+    
+        console.log("do i even submit here?")
         if(!this.state.description || !this.state.amount) {
             this.setState(() => {
                 return {
                     error: "Please provide description and amount"
                 };
             });
+            console.log("couldn't submit due to empty fields");
         }
         else {
             this.setState(() => {
@@ -82,23 +81,22 @@ export default class ExpenseForm extends React.Component {
                     error: ""
                 };
             });
-            this.props.onSubmit(() => {
-                return {
+            this.props.onSubmit({
                     description: this.state.description,
-                    amount: parseFloat(this.state.amount, 10) * 100,
+                    amount: (parseFloat(this.state.amount, 10) * 100),
                     createdAt: this.state.createdAt.valueOf(),
                     note: this.state.note
-                };
             });
             console.log("submitted");
+            console.log(`${this.state.description}`);
         }
     };
 
     render() {
         return (
             <div>
-		<form onSubmit={this.onSubmit}>
-                    {this.state.error && <p> {this.state.error} </p>}
+                {this.state.error && <p> {this.state.error} </p>}
+		        <form onSubmit={this.handleSubmit}>    
                     <input type="text" placeholder="Description" autoFocus value={this.state.description} onChange={this.onDescriptionChange}/>
                     <input type="text" placeholder="Amount" value={this.state.amount} onChange={this.onAmountChange} />
                     <SingleDatePicker 
@@ -111,7 +109,7 @@ export default class ExpenseForm extends React.Component {
                         displayFormat={() => "DD/MM/YYYY"}
                     />
                     <textarea placeholder="Add a note for your expense (OPTIONAL)" value={this.state.note} onChange={this.onNoteChange}></textarea>
-                    <button >Add Expense</button>
+                    <button type="submit" value="Submit">Submit</button>
                 </form>
             </div>
         );
