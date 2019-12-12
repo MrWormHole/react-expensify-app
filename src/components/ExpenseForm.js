@@ -73,7 +73,6 @@ export default class ExpenseForm extends React.Component {
                     error: "Please provide description and amount"
                 };
             });
-            console.log("couldn't submit due to empty fields");
         }
         else {
             this.setState(() => {
@@ -87,8 +86,6 @@ export default class ExpenseForm extends React.Component {
                     createdAt: this.state.createdAt.valueOf(),
                     note: this.state.note
             });
-            console.log("submitted");
-            console.log(`${this.state.description}`);
         }
     };
 
